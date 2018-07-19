@@ -1,0 +1,85 @@
+#!/usr/local/cpanel/3rdparty/bin/perl
+
+package Lsmcd::lsmcdAdminBin;
+
+use utf8;
+use strict;
+use Data::Dumper;
+
+#Make this module inherit from this "groundwork" admin module.
+#This eliminates a large swath of the boilerplate code that admin #modules used to require!
+use parent 'Cpanel::AdminBin::Script::Call';
+
+#Run the module as a script if (and only if) it is called that way.
+#This "modulino" approach helps to facilitate testing and code
+#reusability; for example, you could put some of this class's methods
+#into a base class, then have 2 or more admin modules inherit
+#from that base class.
+__PACKAGE__->run() if !caller;
+
+#This special function is a "whitelist" of actions that
+#a caller may call. Anything not listed here cannot be called.
+#
+#By convention, these functions are named
+#in ALLCAPS_SNAKE_CASE.
+sub _actions {
+    return qw(
+        IS_EA4
+        GET_WP_PHP_BINARY
+        GET_LSMCD_HOME_DIR
+        EXEC_ISSUE_CMD
+    );
+}
+
+sub IS_EA4 {
+    
+    if ( -e '/etc/cpanel/ea4/is_ea4' ) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+sub GET_WP_PHP_BINARY {
+    my ($self, $cmd) = @_;
+    
+    my $output = `$cmd`;
+    
+    chomp($output);
+
+    return $output;
+}
+
+sub GET_LSMCD_HOME_DIR {
+    my ($self, $confFile) = @_;
+    
+    if ( -e $confFile ) {
+        open FILE, $confFile;
+        
+        my $line;
+        
+        while ($line=<FILE>){
+            
+            if ($line=~/LSMCD_HOME_DIR = "(.+)"/){
+                return $1;
+            }
+        }
+    }
+    
+    return "";
+}
+
+sub EXEC_ISSUE_CMD {
+    my ($self, $cmd) = @_;
+    
+    my $output = `$cmd`;
+
+    my $retVar = $? >> 8;
+
+    chomp($output);
+
+    return ( retVar => $retVar, output => $output);
+}
+
+1;
