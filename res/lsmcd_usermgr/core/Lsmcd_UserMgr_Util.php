@@ -87,6 +87,8 @@ class Lsmcd_UserMgr_Util
      */
     public static function getLsmcdHome()
     {
+        return getcwd();
+        /*
         $confFile = realpath(__DIR__ . '/../lsmcd.conf');
 
         $cpanel = CPanelWrapper::getCpanelObj();
@@ -97,6 +99,7 @@ class Lsmcd_UserMgr_Util
         $lsmcdHomeDir = $result['cpanelresult']['result']['data']['lsmcdHomeDir'];
 
         return $lsmcdHomeDir;
+         */
     }
 
     /**
@@ -156,11 +159,10 @@ class Lsmcd_UserMgr_Util
 
     static function setUseSASL($lines)
     {
-        
         foreach ($lines as $line)
         {
             $elements = explode('=', $line, 2);
-            if (count($elements) == 1)
+            if (count($elements) != 2)
                 continue;
             $title = ltrim(rtrim($elements[0]));
             if (!strcasecmp($title,self::USE_SASL_TITLE))
@@ -181,7 +183,7 @@ class Lsmcd_UserMgr_Util
         foreach ($lines as $line)
         {
             $elements = explode('=', $line, 2);
-            if (count($elements) == 1)
+            if (count($elements) != 2)
                 continue;
             $title = ltrim(rtrim($elements[0]));
             if (!strcasecmp($title,self::DATA_BY_USER_TITLE))
@@ -212,7 +214,7 @@ class Lsmcd_UserMgr_Util
         foreach ($lines as $line)
         {
             $elements = explode('=', $line, 2);
-            if (count($elements) == 1)
+            if (count($elements) != 2)
                 continue;
             $title = ltrim(rtrim($elements[0]));
             if (!strcasecmp($title,self::ADDR_TITLE))
@@ -242,36 +244,37 @@ class Lsmcd_UserMgr_Util
                     self::$addrOnly = self::$addr;
                     self::$port = 11211;
                 }
-                    
+                self::setUseSASL($lines);
+                self::setDataByUser($lines);
                 return self::$addr;
             }
         }
 
         throw new UserLSMCDException(self::ADDR_TITLE . " not found in: " . 
                                      self::NODE_CONF_FILE);
-        self::setUseSASL($lines);
-        self::setDataByUser($lines);
     }
     
     public static function getServerAddrOnly()
     {
-        getServerAddr();
+        self::getServerAddr();
         return self::$addrOnly;
     }
     
     public static function getServerPort()
     {
-        getServerAddr();
+        self::getServerAddr();
         return self::$port;
     }
 
     public static function getDataByUser()
     {
+        self::getServerAddr();
         return(self::$useSASL && self::$dataByUser);
     }
     
     public static function getUseSASL()
     {
+        self::getServerAddr();
         return(self::$useSASL);
     }
     

@@ -85,7 +85,6 @@ sub getWpPhpBinary {
 
     my $ret =
       Cpanel::AdminBin::Call::call( 'Lsmcd', 'lsmcdAdminBin', 'GET_WP_PHP_BINARY',
-m,
         $fullCmd );
 
     $result->data(
@@ -124,7 +123,8 @@ sub execIssueCmd {
 
     my ( $args, $result ) = @_;
 
-    my $suCmd = _getSuCmd();
+    #my $suCmd = _getSuCmd();
+    my $suCmd = '/bin/bash -c ';
 
     my $cmd = $args->get_length_required('cmd');
 

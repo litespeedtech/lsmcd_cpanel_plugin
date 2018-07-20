@@ -97,6 +97,7 @@ cp -f ../lsmcdAdminBin* ${API_DIR}/
 chmod -R 644 $PLUGIN_DIR
 find ${PLUGIN_DIR}/ -type d -execdir chmod 755 {} +
 chmod 700 ${PLUGIN_DIR}/*.sh
+chmod 755 ${PLUGIN_DIR}/*.py
 
 
 chmod 700 ${API_DIR}/lsmcdAdminBin

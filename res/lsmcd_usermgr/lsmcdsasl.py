@@ -57,7 +57,7 @@ def extractUserTuple(searchUser, block, data, index):
                         print 'At block: ' + str(block / 4096) + ' at index: ' + str(index) + ' invalid tag: ' + value
                     else:
                         pass  # Not my first rodeo
-                    return 0, foundHere, finalpassword
+                    return 0, foundHere, finalPassword
             elif (title == 'User'):
                 user = value
             elif (title == 'Password'):
@@ -66,6 +66,7 @@ def extractUserTuple(searchUser, block, data, index):
                     #print password
                     foundHere = True
                     finalPassword = password
+                    return index, foundHere, finalPassword
         elif (title == 'tag'):
             # Expected end point
             return 0, foundHere, finalPassword
@@ -82,7 +83,11 @@ def readDb(user,db):
     users = 0
     found = False
     password = ''
-    fd = open(db, 'r')
+    try:
+        fd = open(db, 'r')
+    except IOError as e:
+        print 'File open error of ' + db + ':' + e.strerror + ' I am: ' + str(os.getuid())
+        raise
     while (block < fileSize):
         data = fd.read(4096)
         tag = data[4084:4095]
@@ -91,6 +96,8 @@ def readDb(user,db):
             index = 4095
             while (index):
                 index, foundHere, password = extractUserTuple(user, block, data, index)
+                if (foundHere):
+                    return users, True, password
                 if (index):
                     users = users + 1
                 if (foundHere):
@@ -103,34 +110,45 @@ def getUser():
     if (len(sys.argv) < 2):
         print 'Must specify server'
         sys.exit(1)
+    server = sys.argv[1]
+    if ((len(server) > 8) and (server[0:4].lower() == 'uds:')):
+        server = server[4:]
+        while ((len(server) > 2) and (server[0:2] == '//')):
+            server = server[1:]
+
     if (len(sys.argv) > 2):
         user = sys.argv[2]
     else:
         user = ''
 
-    return sys.argv[1], user
+    return server, user
 
-
+os.seteuid(0)
 password = ''
 server, user = getUser()
 if (len(user) > 0):
     if (validateDb(db)):
         users, found, password = readDb(user,db)
         if (not found):
-            print 'ERROR: User Not found'
+            print 'ERROR: User: ' + user + ' not defined in SASL database'
             sys.exit(1)
     else:
         sys.exit(1)
 
-lsmcd = bmemcached.Client((server,), user, password);
-stats = lsmcd.stats()
-statsValue = stats.get(server)
+try:
+    lsmcd = bmemcached.Client((server,), user, password);
+    stats = lsmcd.stats()
+    statsValue = stats.get(server)
+except bmemcached.exceptions.MemcachedException as e:
+    print('Stats server exception: ' + str(e) + ' user: ' + user)
+    sys.exit(1)
+
 if (len(statsValue) == 0):
-    print('Stats server access error')
+    print('Stats server access error, server: ' + server + ', user: ' + user)
     sys.exit(1)
 
 for k, v in statsValue.iteritems():
-    print k + ': ' + v
+    print k + ':' + v
 
 sys.exit(0)
     

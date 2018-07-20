@@ -8,6 +8,7 @@
 
 namespace LsmcdUserPanel\View\Model;
 
+use LsmcdUserPanel\CPanelWrapper;
 use LsmcdUserPanel\Lsmcd_UserMgr_Controller;
 use LsmcdUserPanel\Lsmcd_UserMgr_Util;
 use LsmcdUserPanel\Lsc\UserLogger;
@@ -38,9 +39,9 @@ class StatsModel
 
     private function init()
     {
-        $this->setStats();
         $this->setUser();
         $this->setServer();
+        $this->setStats();
     }
 
     /**
@@ -59,6 +60,28 @@ class StatsModel
 
     private function doStats()
     {
+        $lsmcdHome = Lsmcd_UserMgr_Util::getLsmcdHome();
+        $file = "{$lsmcdHome}/lsmcdsasl.py";
+
+        $cmd = "{$file} {$this->tplData[self::FLD_SERVER]} " .
+                (Lsmcd_UserMgr_Util::getDataByUser() ? 
+                    Lsmcd_UserMgr_Util::getCurrentCpanelUser() : "");
+
+        $cpanel = CPanelWrapper::getCpanelObj();
+
+        $result = $cpanel->uapi('lsmcd', 'execIssueCmd', array( 'cmd' => $cmd ));
+
+        $return_var = $result['cpanelresult']['result']['data']['retVar'];
+        $resOutput = $result['cpanelresult']['result']['data']['output'];
+        if ($return_var > 0) 
+        {
+            throw new UserLSMCDException('Error getting stats info: RC: ' . 
+                                         $return_var . ' Output: ' .
+                                         $resOutput);
+        }
+        $output = (!empty($resOutput)) ? explode("\n", $resOutput) : array();
+
+        return $output;
     }
     
     private function setStats()
@@ -71,7 +94,7 @@ class StatsModel
         $this->tplData[self::FLD_USER] = 
                 Lsmcd_UserMgr_Util::getDataByUser() ?
                     Lsmcd_UserMgr_Util::getCurrentCpanelUser() :
-                    '[Whole Server]';
+                    'All Users';
     }
     
     private function setServer()

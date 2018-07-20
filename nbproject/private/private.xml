@@ -3,7 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="Group 20180706-09:28:49">
-            <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/Lsc/UserLSMCDException.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/landing/default/index.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/bootstrap_user.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/Lsc/Context/UserContext.php</file>
@@ -15,10 +14,12 @@
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/lsmcd_cpanel_plugin/install.json</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/Lsc/Panel/UserCPanel.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/View/Tpl/Blocks/DivMsgBox.tpl</file>
+            <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/View/Tpl/Stats.tpl</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/static/js/litespeed-custom.min.js</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/Lsc/UserLogger.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/static/js/jquery-3.2.1.min.js</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/View/Model/StatsModel.php</file>
+            <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/lsmcdsasl.py</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/autoloader.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/static/litespeed-custom.min.css</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/Lsmcd_UserMgr_Util.php</file>
@@ -31,6 +32,7 @@
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/View/View.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/View/Model/MainViewModel.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/View/Tpl/MissingTpl.tpl</file>
+            <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd.pm</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/res/lsmcd_usermgr/core/Lsc/UserLogEntry.php</file>
             <file>file:/home/user/proj/lsmcd_cpanel_plugin/lsmcd_cpanel_plugin/lsmcd_usermgr.png</file>
         </group>
