@@ -81,10 +81,8 @@ $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
     <i class="uk-icon uk-icon-question ls-text-skyblue">&nbsp;</i>
     <?php echo 'User: ' . $user; ?>
   </h2>
-  <?php /*
   <hr class="uk-margin-top-remove uk-width-large-3-10 uk-width-medium-1-1
         uk-width-small-1-1 ls-border" />
-  */ ?>
   <div class="uk-table">
     <p>
         <?php 
@@ -126,8 +124,6 @@ $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
         }
         ?>
     </p>
-  <?php /*
-  */ ?>
   </div>
 </div>
 

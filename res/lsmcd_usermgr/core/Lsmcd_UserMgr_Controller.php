@@ -41,14 +41,17 @@ class Lsmcd_UserMgr_Controller
     public function run()
     {
         $supportedActions = array(
-            'ChangePassword', 'DisplayStats', '', 'main'
+            'ChangePassword', 'DisplayStats', '', 'main', 'NewPassword'
         );
 
         $do = Lsmcd_UserMgr_Util::get_request_var('do');
   
         switch ($do) {
+            case 'NewPassword':
+                $this->changePassword('new');
+                break;
             case 'ChangePassword':
-                $this->changePassword();
+                $this->changePassword('');
                 break;
             case 'DisplayStats':
                 $this->displayStats();
@@ -68,18 +71,17 @@ class Lsmcd_UserMgr_Controller
         $this->display($viewModel);
     }
 
-    private function changePassword()
+    private function changePassword($subFunction)
     {
         
-        throw new UserLSMCDException('Change Password request!');
-        //$changePasswordModel = new ViewModel\ChangePasswordModel();
-        //$this->display($changePasswordModel);
+        //throw new UserLSMCDException('Change Password request!');
+        $changePasswordModel = new ViewModel\ChangePasswordModel($subFunction);
+        $this->display($changePasswordModel);
         
     }
 
     private function displayStats()
     {
-        //throw new UserLSMCDException('Display Stats request');
         $viewModel = new ViewModel\StatsModel();
         $this->display($viewModel);
     }
