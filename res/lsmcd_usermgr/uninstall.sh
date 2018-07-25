@@ -28,7 +28,7 @@ fi
 #Remove cPanel plugin and files
 if [ -e $CPANEL_PLUGIN_DIR ] ; then
     echo 'Removing LSMCD User Manager Manager cPanel Plugin...'
-    /usr/local/cpanel/scripts/uninstall_plugin ${PLUGIN_DIR}/lsmcd_user_mgr.tar.gz
+    /usr/local/cpanel/scripts/uninstall_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz
     /bin/rm -rf $PLUGIN_DIR
     echo ""
 fi

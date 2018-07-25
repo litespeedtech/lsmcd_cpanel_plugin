@@ -20,6 +20,12 @@ then
     exit 1
 fi
 
+./install_lsmcd.sh
+if [ $? -ne 0 ]
+then
+    echo 'lsmcd install failed'
+    exit 1
+fi
 
 whereis pip|grep -q '/'
 if [ $? -gt 0 ]
