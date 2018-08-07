@@ -17,7 +17,7 @@ then
    echo 'groupinstall failed'
    exit 1
 fi
-yum -y install autoconf automake zlib-devel openssl-devel expat-devel pcre-devel libmemcached-devel cyrus-sasl cyrus-sasl-devel
+yum -y install autoconf automake zlib-devel openssl-devel expat-devel pcre-devel libmemcached-devel cyrus-sasl cyrus-sasl-devel cyrus-sasl-plain
 if [ $? -ne 0 ]
 then
    echo 'package install failed'

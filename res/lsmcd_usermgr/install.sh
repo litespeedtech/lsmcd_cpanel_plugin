@@ -31,7 +31,7 @@ whereis pip|grep -q '/'
 if [ $? -gt 0 ]
 then
     echo 'pip missing - installing'
-    wget https://bootstrap.pypa.io/get-pip.py -O get-pip.py
+    wget https://bootstrap.pypa.io/2.6/get-pip.py -O get-pip.py
     if [ $? -gt 0 ]
     then
         echo 'pip download failed - validate your network connection'
@@ -57,7 +57,7 @@ fi
 if [ $? -gt 0 ] 
 then
     echo 'Installing python-binary-memcached'
-    /usr/bin/python -m pip install python-binary-memcached
+    pip install python-binary-memcached
     if [ $? -gt 0 ]
     then
         echo 'Error installing required package - validate your network connection'
