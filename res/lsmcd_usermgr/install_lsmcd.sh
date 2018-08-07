@@ -36,7 +36,6 @@ then
    exit 1
 fi
 cd lsmcd
-git checkout SASL_Hash_User
 echo "Running configure"
 ./fixtimestamp.sh
 ./configure CFLAGS=" -O3" CXXFLAGS=" -O3"
