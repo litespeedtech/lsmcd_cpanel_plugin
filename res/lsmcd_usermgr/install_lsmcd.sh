@@ -23,10 +23,10 @@ then
    echo 'package install failed'
    exit 1
 fi
-cd /tmp
+cd /root
 if [ -d lsmcd ]
 then
-   echo 'Removing prior /tmp/lsmcd directory' 
+   echo 'Removing prior /root/lsmcd directory' 
    rm -rf lsmcd
 fi
 git clone https://github.com/litespeedtech/lsmcd.git
