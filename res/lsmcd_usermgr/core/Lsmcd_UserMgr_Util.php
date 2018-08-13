@@ -20,14 +20,10 @@ class Lsmcd_UserMgr_Util
     const ADDR_TITLE = "cached.addr";
     const USE_SASL_TITLE = 'cached.usesasl';
     const DATA_BY_USER_TITLE = 'cached.databyuser';
-    
-    private static $homeDir;
-    static $addr;
-    static $useSASL;
-    static $dataByUser;
-    static $addrOnly;
-    static $port;
 
+    static $addr = "";
+    static $useSASL = FALSE;
+    static $dataByUser = FALSE;
 
     private function __construct()
     {
@@ -111,30 +107,12 @@ class Lsmcd_UserMgr_Util
             $title = ltrim(rtrim($elements[0]));
             if ( !strcasecmp($title, self::ADDR_TITLE) ) {
                 self::$addr = ltrim(rtrim($elements[1]));
-                if (!strlen(self::$addr))
-                    throw new UserLSMCDException(self::ADDR_TITLE . 
-                                                 " not given a value in: " .
-                                                 $line . ' in file: ' .
-                                                 self::NODE_CONF_FILE);
-                if ((strlen(self::$addr > 7)) && 
-                    (!strcasecmp(substr(self::$addr,0,6), 'uds://')))
-                {
-                    self::$addrOnly = substr(self::$addr, 6);
-                    self::$port = 0;
-                }
-                else if ($pos = strpos(self::$addr, ":"))
-                {
-                    self::$addrOnly = substr(self::$addr, 0, $pos);
-                    if ($pos + 1 == strlen(self::$addr))
-                        self::$port = 11211;
-                    else
-                        self::$port = (int)substr(self::$addr, $pos + 1);
-                }
-                else
-                {
-                    self::$addrOnly = self::$addr;
-                    self::$port = 11211;
-                }
+                if ( !strlen(self::$addr) )
+                    throw new UserLSMCDException(self::ADDR_TITLE .
+                    " not given a value in: " .
+                    $line . ' in file: ' .
+                    self::NODE_CONF_FILE);
+
                 self::setUseSASL($lines);
                 self::setDataByUser($lines);
                 return self::$addr;
