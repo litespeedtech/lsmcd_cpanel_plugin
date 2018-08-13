@@ -56,10 +56,12 @@ class Lsmcd_UserMgr_Controller
                 $this->displayStats();
                 break;
             default:
-                if ($userMgrRuns)
+                if ( self::$userMgrRuns ) {
                     throw new UserLSMCDException("No good do value");
+                }
                 $this->main();
-                $userMgrRuns ++;
+
+                self::$userMgrRuns ++;
                 break;
         }
     }
