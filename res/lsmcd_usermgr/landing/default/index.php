@@ -27,3 +27,4 @@ catch ( UserLSMCDException $e ) {
     echo "<h1>LSMCD User Manager Fatal Error</h1>" . "<h2>{$msg}</h2>";
 }
 
+CPanelWrapper::getCpanelObj()->end();
