@@ -8,5 +8,4 @@
 
 $activeTheme = 'default';
 
-
 include "landing/{$activeTheme}/index.php";

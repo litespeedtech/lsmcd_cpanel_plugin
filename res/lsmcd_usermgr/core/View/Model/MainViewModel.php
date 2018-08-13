@@ -10,14 +10,11 @@ namespace LsmcdUserPanel\View\Model;
 
 use LsmcdUserPanel\Lsmcd_UserMgr_Controller;
 use LsmcdUserPanel\Lsmcd_UserMgr_Util;
-use LsmcdUserPanel\Lsc\UserLogger;
 
 class MainViewModel
 {
 
     const FLD_PLUGIN_VER = 'pluginVer';
-    const FLD_ERR_MSGS = 'errMsgs';
-    const FLD_SUCC_MSGS = 'succMsgs';
     const FLD_ADDR = 'addr';
     const FLD_USER = 'user';
     const FLD_DATA_BY_USER = 'dataByUser';
@@ -36,7 +33,6 @@ class MainViewModel
     private function init()
     {
         $this->setPluginVer();
-        $this->setMsgData();
         $this->setAddr();
         $this->setDataByUser();
         $this->setUser();
@@ -61,14 +57,6 @@ class MainViewModel
     {
         $this->tplData[self::FLD_PLUGIN_VER] =
                 Lsmcd_UserMgr_Controller::MODULE_VERSION;
-    }
-
-    private function setMsgData()
-    {
-        $this->tplData[self::FLD_ERR_MSGS] =
-                UserLogger::getUiMsgs(UserLogger::UI_ERR);
-        $this->tplData[self::FLD_SUCC_MSGS] =
-                UserLogger::getUiMsgs(UserLogger::UI_SUCC);
     }
 
     private function setAddr()

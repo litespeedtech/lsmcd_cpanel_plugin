@@ -8,72 +8,9 @@ $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
 ?>
 
 <div class="uk-container">
-
-  <?php
-
-  $errMsgCnt = count($errMsgs);
-  $succMsgCnt = count($succMsgs);
-
-  if ( $errMsgCnt > 0 || $succMsgCnt > 0 ) {
-      $msgsDisplay = 'initial';
-  }
-  else {
-      $msgsDisplay = 'none';
-  }
-
-  ?>
-
-  <div id="display-msgs" style="display:<?php echo $msgsDisplay; ?>;">
-      
-    <button class="accordion accordion-error" type="button"
-            style="display: <?php echo ($errMsgCnt > 0) ? 'initial' : 'none'; ?>">
-      Error Messages
-      <span id ="errMsgCnt" class="badge errMsg-badge">
-        <?php echo $errMsgCnt; ?>
-      </span>
-    </button>
-    <div class="panel panel-error">
-
-      <?php
-
-      $d = array(
-          'id' => 'errMsgs',
-          'msgs' => $errMsgs,
-          'class' => 'scrollable',
-      );
-      $this->loadTplBlock('DivMsgBox.tpl', $d);
-
-      ?>
-
-    </div>
-
-    <button class="accordion accordion-success" type="button"
-            style="display: <?php echo ($succMsgCnt > 0) ? 'initial' : 'none'; ?>">
-      Success Messages
-      <span id="succMsgCnt" class="badge succMsg-badge">
-        <?php echo $succMsgCnt; ?>
-      </span>
-    </button>
-    <div class="panel panel-success">
-
-      <?php
-
-      $d = array(
-          'id' => 'succMsgs',
-          'msgs' => $succMsgs,
-          'class' => 'scrollable',
-      );
-      $this->loadTplBlock('DivMsgBox.tpl', $d);
-
-      ?>
-
-    </div>
-  </div>
-
   <p class="uk-text-large uk-margin-large-bottom">
     <?php echo 'Stats for Server: ' . $server; ?>
   </p>
-
 </div>
 
 <div class="uk-container">
@@ -85,7 +22,7 @@ $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
         uk-width-small-1-1 ls-border" />
   <div class="uk-table">
     <p>
-        <?php 
+        <?php
         $didTitle = FALSE;
         $didTable = FALSE;
         foreach ($stats as &$line)
@@ -95,7 +32,7 @@ $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
             {
                 if ($didTitle == FALSE)
                 {
-                    echo 'Unexpected data (count: ' . count($titleValue) . 
+                    echo 'Unexpected data (count: ' . count($titleValue) .
                          ' line: ' . $line . '):<br>';
                     print_r($stats);
                     break;
@@ -105,7 +42,7 @@ $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
             if ($didTitle == FALSE)
             {
                 $didTitle = TRUE;
-                
+
                 echo '<table>' .
                      '  <tr>' .
                      '    <th>Variable</th>' .

@@ -8,79 +8,16 @@ $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
 ?>
 
 <div class="uk-container">
-
-  <?php
-
-  $errMsgCnt = count($errMsgs);
-  $succMsgCnt = count($succMsgs);
-
-  if ( $errMsgCnt > 0 || $succMsgCnt > 0 ) {
-      $msgsDisplay = 'initial';
-  }
-  else {
-      $msgsDisplay = 'none';
-  }
-
-  ?>
-
-  <div id="display-msgs" style="display:<?php echo $msgsDisplay; ?>;">
-      
-    <button class="accordion accordion-error" type="button"
-            style="display: <?php echo ($errMsgCnt > 0) ? 'initial' : 'none'; ?>">
-      Error Messages
-      <span id ="errMsgCnt" class="badge errMsg-badge">
-        <?php echo $errMsgCnt; ?>
-      </span>
-    </button>
-    <div class="panel panel-error">
-
-      <?php
-
-      $d = array(
-          'id' => 'errMsgs',
-          'msgs' => $errMsgs,
-          'class' => 'scrollable',
-      );
-      $this->loadTplBlock('DivMsgBox.tpl', $d);
-
-      ?>
-
-    </div>
-
-    <button class="accordion accordion-success" type="button"
-            style="display: <?php echo ($succMsgCnt > 0) ? 'initial' : 'none'; ?>">
-      Success Messages
-      <span id="succMsgCnt" class="badge succMsg-badge">
-        <?php echo $succMsgCnt; ?>
-      </span>
-    </button>
-    <div class="panel panel-success">
-
-      <?php
-
-      $d = array(
-          'id' => 'succMsgs',
-          'msgs' => $succMsgs,
-          'class' => 'scrollable',
-      );
-      $this->loadTplBlock('DivMsgBox.tpl', $d);
-
-      ?>
-
-    </div>
-  </div>
-
   <p class="uk-text-large uk-margin-large-bottom">
     <?php echo 'Change Password on: ' . $server; ?>
   </p>
-
 </div>
 
 <div class="uk-container">
   <h2 class="uk-margin-bottom-remove ls-text-bold ls-text-slateblue">
     <i class="uk-icon uk-icon-question ls-text-skyblue">&nbsp;</i>
-    <?php 
-    echo 'User: ' . $user; 
+    <?php
+    echo 'User: ' . $user;
     echo '<hr class="uk-margin-top-remove uk-width-large-3-10 ' .
          'uk-width-medium-1-1 uk-width-small-1-1 ls-border" />';
     if (strlen($message))
@@ -88,9 +25,9 @@ $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
         echo '<br>';
         if ($done != '')
             echo '   <img src="static/icons/success_icon.png">';
-        else        
+        else
             echo '   <img src="static/icons/error_icon.png">';
-            
+
         echo '  ' . $message;
         echo '  <hr class="uk-margin-top-remove uk-width-large-3-10 ' .
              'uk-width-medium-1-1 uk-width-small-1-1 ls-border" />';
@@ -108,7 +45,7 @@ $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
          uk-pull-1-10">
         <input type="password" name="pwd1">
     </div>
-      
+
     <div class="uk-width-large-2-3 uk-width-medium-1-1 uk-width-small-1-1
            uk-margin-bottom">
       <p class="uk-margin-left">
@@ -119,8 +56,8 @@ $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
          uk-pull-1-10">
         <input type="password" name="pwd2">
     </div>
-      
-      
+
+
     <div class="uk-width-large-2-3 uk-width-medium-1-1 uk-width-small-1-1
            uk-margin-bottom">
       <p class="uk-margin-left">
@@ -133,7 +70,7 @@ $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
       </p>
     </div>
   </div>
-  
+
 </div>
 
 

@@ -121,17 +121,6 @@ class ChangePasswordModel
         $this->tplData[self::FLD_SERVER] = Lsmcd_UserMgr_Util::getServerAddr();
     }
 
-    private function strArray( $array )
-    {
-        $str = '';
-        foreach ( $array as $key => $value ) {
-            if ( strlen($str) )
-                $str .= ', ';
-            $str .= 'key: ' . $key . ' value: ' . $value;
-        }
-        return $str;
-    }
-
     public function setMessage( $message )
     {
         $this->tplData[self::FLD_MESSAGE] = $message;
