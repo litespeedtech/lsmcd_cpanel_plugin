@@ -93,14 +93,14 @@ class Lsmcd_UserMgr_Controller
     {
         $view = new View($viewModel);
 
-        //try {
+        try {
             $view->display();
-        //}
-        //catch ( UserLSMCDException $e ) {
-        //    $viewModel = new ViewModel\MissingTplViewModel($e->getMessage());
-        //    $view = new View($viewModel);
-        //    $view->display();
-        //}
+        }
+        catch ( UserLSMCDException $e ) {
+            $viewModel = new ViewModel\MissingTplViewModel($e->getMessage());
+            $view = new View($viewModel);
+            $view->display();
+        }
     }
 
 }
