@@ -52,7 +52,7 @@ class StatsModel
 
     private function doStats()
     {
-        $lsmcdHome = Lsmcd_UserMgr_Util::getLsmcdHome();
+        $lsmcdHome = getcwd();
         $file = "{$lsmcdHome}/lsmcdsasl.py";
 
         $cmd = "{$file} {$this->tplData[self::FLD_SERVER]} " .

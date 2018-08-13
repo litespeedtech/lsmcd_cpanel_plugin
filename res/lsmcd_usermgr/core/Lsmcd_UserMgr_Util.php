@@ -46,15 +46,6 @@ class Lsmcd_UserMgr_Util
 
     /**
      *
-     * @return string
-     */
-    public static function getLsmcdHome()
-    {
-        return getcwd();
-    }
-
-    /**
-     *
      * @param string  $tag
      * @return null|string
      */
