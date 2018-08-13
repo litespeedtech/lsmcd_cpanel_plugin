@@ -24,50 +24,8 @@ __PACKAGE__->run() if !caller;
 #in ALLCAPS_SNAKE_CASE.
 sub _actions {
     return qw(
-        IS_EA4
-        GET_WP_PHP_BINARY
-        GET_LSMCD_HOME_DIR
         EXEC_ISSUE_CMD
     );
-}
-
-sub IS_EA4 {
-    
-    if ( -e '/etc/cpanel/ea4/is_ea4' ) {
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
-sub GET_WP_PHP_BINARY {
-    my ($self, $cmd) = @_;
-    
-    my $output = `$cmd`;
-    
-    chomp($output);
-
-    return $output;
-}
-
-sub GET_LSMCD_HOME_DIR {
-    my ($self, $confFile) = @_;
-    
-    if ( -e $confFile ) {
-        open FILE, $confFile;
-        
-        my $line;
-        
-        while ($line=<FILE>){
-            
-            if ($line=~/LSMCD_HOME_DIR = "(.+)"/){
-                return $1;
-            }
-        }
-    }
-    
-    return "";
 }
 
 sub EXEC_ISSUE_CMD {

@@ -8,7 +8,6 @@
 
 namespace LsmcdUserPanel;
 
-use \LsmcdUserPanel\CPanelWrapper;
 use LsmcdUserPanel\Lsc\UserLSMCDException;
 
 class Lsmcd_UserMgr_Util
@@ -29,46 +28,10 @@ class Lsmcd_UserMgr_Util
     static $addrOnly;
     static $port;
 
-    private function __construct() 
+
+    private function __construct()
     {
-        self::$addr = "";
-        self::$useSASL = FALSE;
-        self::$dataByUser = FALSE;
-    }
 
-    /**
-     *
-     * @return string
-     * @throws \Lsc\Wp\LSCMException
-     */
-    public static function getHomeDir()
-    {
-        if ( !self::$homeDir ) {
-
-            if ( isset($_SERVER['HOME']) ) {
-                self::$homeDir = $_SERVER['HOME'];
-            }
-            elseif ( isset($_SERVER['DOCUMENT_ROOT']) ) {
-                self::$homeDir = $_SERVER['DOCUMENT_ROOT'];
-            }
-            else {
-                throw new LSMCDException('Could not get home directory');
-            }
-        }
-
-        return self::$homeDir;
-    }
-
-    /**
-     * Returns the length of chars that make up the users the home dir.
-     *
-     * @return int
-     */
-    public static function getHomeDirLen()
-    {
-        $homeDirLen = strlen(self::getHomeDir());
-
-        return $homeDirLen;
     }
 
     /**
@@ -88,18 +51,6 @@ class Lsmcd_UserMgr_Util
     public static function getLsmcdHome()
     {
         return getcwd();
-        /*
-        $confFile = realpath(__DIR__ . '/../lsmcd.conf');
-
-        $cpanel = CPanelWrapper::getCpanelObj();
-
-        $result = $cpanel->uapi('lsmcd', 'getLsmcdHomeDir',
-                array( 'confFile' => $confFile ));
-
-        $lsmcdHomeDir = $result['cpanelresult']['result']['data']['lsmcdHomeDir'];
-
-        return $lsmcdHomeDir;
-         */
     }
 
     /**
@@ -115,61 +66,16 @@ class Lsmcd_UserMgr_Util
         return $_REQUEST[$tag];
     }
 
-    /**
-     *
-     * @param string  $tag
-     * @return null|string[]
-     */
-    public static function get_request_list( $tag )
-    {
-        if ( !isset($_REQUEST[$tag]) )
-            return NULL;
-
-        $result = $_REQUEST[$tag];
-        return (is_array($result)) ? $result : NULL;
-    }
-
-    /**
-     * Recursively deletes a directory and its contents.
-     *
-     * @param string  $dir  Directory path
-     */
-    public static function rrmdir( $dir, $keepParent = false )
-    {
-        if ( $dir != '' && is_dir($dir) ) {
-
-            foreach ( glob($dir . '/*') as $file ) {
-
-                if ( is_dir($file) ) {
-                    Lsmcd_UserMgr_Util::rrmdir($file);
-                }
-                else {
-                    unlink($file);
-                }
-            }
-
-            if ( !$keepParent )
-                rmdir($dir);
-
-            return true;
-        }
-
-        return false;
-    }
-
     static function setUseSASL($lines)
     {
-        foreach ($lines as $line)
-        {
+        foreach ( $lines as $line ) {
             $elements = explode('=', $line, 2);
-            if (count($elements) != 2)
+            if ( count($elements) != 2 )
                 continue;
             $title = ltrim(rtrim($elements[0]));
-            if (!strcasecmp($title,self::USE_SASL_TITLE))
-            {
+            if ( !strcasecmp($title, self::USE_SASL_TITLE) ) {
                 $value = ltrim(rtrim($elements[1]));
-                if (!strcasecmp($value,"true"))
-                {
+                if ( !strcasecmp($value, "true") ) {
                     self::$useSASL = TRUE;
                     break;
                 }
@@ -177,20 +83,17 @@ class Lsmcd_UserMgr_Util
         }
         return self::$useSASL;
     }
-    
-    static function setDataByUser($lines)
+
+    static function setDataByUser( $lines )
     {
-        foreach ($lines as $line)
-        {
+        foreach ( $lines as $line ) {
             $elements = explode('=', $line, 2);
-            if (count($elements) != 2)
+            if ( count($elements) != 2 )
                 continue;
             $title = ltrim(rtrim($elements[0]));
-            if (!strcasecmp($title,self::DATA_BY_USER_TITLE))
-            {
+            if ( !strcasecmp($title, self::DATA_BY_USER_TITLE) ) {
                 $value = ltrim(rtrim($elements[1]));
-                if (!strcasecmp($value,"true"))
-                {
+                if ( !strcasecmp($value, "true") ) {
                     self::$dataByUser = TRUE;
                     break;
                 }
@@ -198,27 +101,24 @@ class Lsmcd_UserMgr_Util
         }
         return self::$dataByUser;
     }
-    
+
     public static function getServerAddr()
     {
-        if (strlen(self::$addr))
+        if ( strlen(self::$addr) )
             return self::$addr;
-        
-        if (file_exists(self::NODE_CONF_FILE) == false)
-        {
-            throw new UserLSMCDException('node.conf not found in expected' . 
-                                         ' location: ' . self::NODE_CONF_FILE);
+
+        if ( file_exists(self::NODE_CONF_FILE) == false ) {
+            throw new UserLSMCDException('node.conf not found in expected' .
+            ' location: ' . self::NODE_CONF_FILE);
         }
         $lines = file(self::NODE_CONF_FILE);
-        
-        foreach ($lines as $line)
-        {
+
+        foreach ( $lines as $line ) {
             $elements = explode('=', $line, 2);
-            if (count($elements) != 2)
+            if ( count($elements) != 2 )
                 continue;
             $title = ltrim(rtrim($elements[0]));
-            if (!strcasecmp($title,self::ADDR_TITLE))
-            {
+            if ( !strcasecmp($title, self::ADDR_TITLE) ) {
                 self::$addr = ltrim(rtrim($elements[1]));
                 if (!strlen(self::$addr))
                     throw new UserLSMCDException(self::ADDR_TITLE . 
@@ -250,20 +150,8 @@ class Lsmcd_UserMgr_Util
             }
         }
 
-        throw new UserLSMCDException(self::ADDR_TITLE . " not found in: " . 
-                                     self::NODE_CONF_FILE);
-    }
-    
-    public static function getServerAddrOnly()
-    {
-        self::getServerAddr();
-        return self::$addrOnly;
-    }
-    
-    public static function getServerPort()
-    {
-        self::getServerAddr();
-        return self::$port;
+        throw new UserLSMCDException(self::ADDR_TITLE . " not found in: " .
+        self::NODE_CONF_FILE);
     }
 
     public static function getDataByUser()
@@ -271,11 +159,11 @@ class Lsmcd_UserMgr_Util
         self::getServerAddr();
         return(self::$useSASL && self::$dataByUser);
     }
-    
+
     public static function getUseSASL()
     {
         self::getServerAddr();
         return(self::$useSASL);
     }
-    
+
 }

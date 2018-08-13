@@ -11,7 +11,6 @@ namespace LsmcdUserPanel;
 use \LsmcdUserPanel\Lsmcd_UserMgr_Util;
 use \LsmcdUserPanel\Lsc\Context\UserContext;
 use \LsmcdUserPanel\Lsc\Context\UserPanelContextOption;
-//use \LsmcdUserPanel\Lsc\UserLogger;
 use \LsmcdUserPanel\Lsc\UserLSMCDException;
 use \LsmcdUserPanel\View\Model as ViewModel;
 use \LsmcdUserPanel\View\View;
@@ -21,7 +20,7 @@ class Lsmcd_UserMgr_Controller
 
     const MODULE_VERSION = '1.0.0';
     const TPL_DIR = 'core/View/Tpl';
-    
+
     static $userMgrRuns = 0;
 
     public function __construct()
@@ -45,7 +44,7 @@ class Lsmcd_UserMgr_Controller
         );
 
         $do = Lsmcd_UserMgr_Util::get_request_var('do');
-  
+
         switch ($do) {
             case 'NewPassword':
                 $this->changePassword('new');
@@ -71,13 +70,10 @@ class Lsmcd_UserMgr_Controller
         $this->display($viewModel);
     }
 
-    private function changePassword($subFunction)
+    private function changePassword( $subFunction )
     {
-        
-        //throw new UserLSMCDException('Change Password request!');
         $changePasswordModel = new ViewModel\ChangePasswordModel($subFunction);
         $this->display($changePasswordModel);
-        
     }
 
     private function displayStats()

@@ -9,12 +9,8 @@
 namespace LsmcdUserPanel\View\Model;
 
 use LsmcdUserPanel\CPanelWrapper;
-use LsmcdUserPanel\Lsmcd_UserMgr_Controller;
 use LsmcdUserPanel\Lsmcd_UserMgr_Util;
-use LsmcdUserPanel\Lsc\UserLogger;
 use LsmcdUserPanel\Lsc\UserLSMCDException;
-use LsmcdUserPanel\Lsc\Context\UserPanelContextOption;
-
 
 class StatsModel
 {
@@ -27,11 +23,7 @@ class StatsModel
      * @var mixed[]
      */
     private $tplData = array();
-    
-    /**
-     *
-     * @param UserControlPanel  $panelEnv
-     */
+
     public function __construct()
     {
         $this->init();
@@ -64,8 +56,8 @@ class StatsModel
         $file = "{$lsmcdHome}/lsmcdsasl.py";
 
         $cmd = "{$file} {$this->tplData[self::FLD_SERVER]} " .
-                (Lsmcd_UserMgr_Util::getDataByUser() ? 
-                    Lsmcd_UserMgr_Util::getCurrentCpanelUser() : "");
+                (Lsmcd_UserMgr_Util::getDataByUser() ?
+                Lsmcd_UserMgr_Util::getCurrentCpanelUser() : "");
 
         $cpanel = CPanelWrapper::getCpanelObj();
 
@@ -73,30 +65,28 @@ class StatsModel
 
         $return_var = $result['cpanelresult']['result']['data']['retVar'];
         $resOutput = $result['cpanelresult']['result']['data']['output'];
-        if ($return_var > 0) 
-        {
-            throw new UserLSMCDException('Error getting stats info: RC: ' . 
-                                         $return_var . ' Output: ' .
-                                         $resOutput);
+        if ( $return_var > 0 ) {
+            throw new UserLSMCDException('Error getting stats info: RC: ' .
+            $return_var . ' Output: ' .
+            $resOutput);
         }
         $output = (!empty($resOutput)) ? explode("\n", $resOutput) : array();
 
         return $output;
     }
-    
+
     private function setStats()
     {
         $this->tplData[self::FLD_STATS] = $this->doStats();
     }
-    
+
     private function setUser()
     {
-        $this->tplData[self::FLD_USER] = 
-                Lsmcd_UserMgr_Util::getDataByUser() ?
-                    Lsmcd_UserMgr_Util::getCurrentCpanelUser() :
-                    'All Users';
+        $this->tplData[self::FLD_USER] = Lsmcd_UserMgr_Util::getDataByUser() ?
+                Lsmcd_UserMgr_Util::getCurrentCpanelUser() :
+                'All Users';
     }
-    
+
     private function setServer()
     {
         $this->tplData[self::FLD_SERVER] = Lsmcd_UserMgr_Util::getServerAddr();

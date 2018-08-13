@@ -11,8 +11,6 @@ namespace LsmcdUserPanel\View\Model;
 use LsmcdUserPanel\Lsmcd_UserMgr_Controller;
 use LsmcdUserPanel\Lsmcd_UserMgr_Util;
 use LsmcdUserPanel\Lsc\UserLogger;
-use LsmcdUserPanel\Lsc\UserLSMCDException;
-use LsmcdUserPanel\Lsc\Context\UserPanelContextOption;
 
 class MainViewModel
 {
@@ -29,11 +27,7 @@ class MainViewModel
      * @var mixed[]
      */
     private $tplData = array();
-    
-    /**
-     *
-     * @param UserControlPanel  $panelEnv
-     */
+
     public function __construct()
     {
         $this->init();
@@ -65,8 +59,8 @@ class MainViewModel
 
     private function setPluginVer()
     {
-        $this->tplData[self::FLD_PLUGIN_VER] = 
-                \LsmcdUserPanel\Lsmcd_UserMgr_Controller::MODULE_VERSION;
+        $this->tplData[self::FLD_PLUGIN_VER] =
+                Lsmcd_UserMgr_Controller::MODULE_VERSION;
     }
 
     private function setMsgData()
@@ -76,7 +70,7 @@ class MainViewModel
         $this->tplData[self::FLD_SUCC_MSGS] =
                 UserLogger::getUiMsgs(UserLogger::UI_SUCC);
     }
-    
+
     private function setAddr()
     {
         $this->tplData[self::FLD_ADDR] = Lsmcd_UserMgr_Util::getServerAddr();
@@ -84,22 +78,21 @@ class MainViewModel
 
     private function setDataByUser()
     {
-        $this->tplData[self::FLD_DATA_BY_USER] = 
+        $this->tplData[self::FLD_DATA_BY_USER] =
                 Lsmcd_UserMgr_Util::getDataByUser();
     }
-    
+
     private function setUser()
     {
-        $this->tplData[self::FLD_USER] = 
+        $this->tplData[self::FLD_USER] =
                 Lsmcd_UserMgr_Util::getCurrentCpanelUser();
     }
-    
+
     private function setSASL()
     {
-        $this->tplData[self::FLD_SASL] = 
-                Lsmcd_UserMgr_Util::getUseSASL();
+        $this->tplData[self::FLD_SASL] = Lsmcd_UserMgr_Util::getUseSASL();
     }
-    
+
     /**
      *
      * @return string
