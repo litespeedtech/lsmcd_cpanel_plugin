@@ -4,7 +4,10 @@ package Lsmcd::lsmcdAdminBin;
 
 use utf8;
 use strict;
+use Sys::Hostname;
 use Data::Dumper;
+use POSIX ":sys_wait_h";
+use IPC::Open2;
 
 #Make this module inherit from this "groundwork" admin module.
 #This eliminates a large swath of the boilerplate code that admin #modules used to require!
@@ -27,7 +30,8 @@ sub _actions {
         IS_EA4
         GET_WP_PHP_BINARY
         GET_LSMCD_HOME_DIR
-        EXEC_ISSUE_CMD
+        ISSUE_SASL_CHANGE_PASSWORD
+        DO_STATS
     );
 }
 
@@ -70,16 +74,65 @@ sub GET_LSMCD_HOME_DIR {
     return "";
 }
 
-sub EXEC_ISSUE_CMD {
-    my ($self, $cmd) = @_;
-    
-    my $output = `$cmd`;
+sub ISSUE_SASL_CHANGE_PASSWORD {
 
-    my $retVar = $? >> 8;
+    #Prevent potential action-at-a-distance bugs.
+    #(cf. documentation for CPAN's Try::Tiny module)
+    local $@;
+
+    my ( $self, $password, $result ) = @_;
+
+    my $retVar = 127;
+    my $output = "Program not run";
+
+    my $user = $self->get_caller_username();
+    my $host = hostname;
+
+    my ($rh, $wh);
+    my $pid = open2( $rh, $wh, "/usr/sbin/saslpasswd2", "-f", "/etc/sasldb2", 
+                     "-p", $user . '@' . $host);
+    print $wh $password, "\n";
+    $output = '';
+    while (my $line = <$rh>)
+    {
+        $output = $output . $line;
+    }
+    waitpid($pid, 0);
+
+    $retVar = $? >> 8;
 
     chomp($output);
 
     return ( retVar => $retVar, output => $output);
 }
+
+sub DO_STATS {
+
+    #Prevent potential action-at-a-distance bugs.
+    #(cf. documentation for CPAN's Try::Tiny module)
+    local $@;
+
+    my ( $self, $server, $directory, $result ) = @_;
+
+    my $retVar = 127;
+    my $output = "Program not run";
+
+    my $user = $self->get_caller_username();
+    my ($rh, $wh);
+    my $pid = open2( $rh, $wh, "$directory/lsmcdsasl.py", $server, $user);
+    $output = '';
+    while (my $line = <$rh>)
+    {
+        $output = $output . $line;
+    }
+    waitpid($pid, 0);
+
+    $retVar = $? >> 8;
+
+    chomp($output);
+
+    return ( retVar => $retVar, output => $output);
+}
+
 
 1;

@@ -89,7 +89,7 @@ cp -r * ${PLUGIN_DIR}/
 # Install the plugin (which also places the png image in the proper location)
 /usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz
 
-echo 'Installing need Perl module and custom API calls...'
+echo 'Installing needed Perl module and custom API calls...'
 echo ""
 
 cp -f ../lsmcd.pm ${PERL_MODULE_DIR}/

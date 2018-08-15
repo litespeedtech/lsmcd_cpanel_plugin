@@ -5,6 +5,8 @@ $user = $this->viewModel->getTplData(ViewModel::FLD_USER);
 $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
 $message = $this->viewModel->getTplData(ViewModel::FLD_MESSAGE);
 $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
+$pwd1Disabled = $this->viewModel->getTplData(ViewModel::FLD_PWD1DISABLED);
+$pwd2Disabled = $this->viewModel->getTplData(ViewModel::FLD_PWD2DISABLED);
 ?>
 
 <div class="uk-container">
@@ -106,7 +108,7 @@ $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
     </div>
     <div class="uk-width-large-1-3 uk-width-medium-1-1 uk-width-small-1-1
          uk-pull-1-10">
-        <input type="password" name="pwd1">
+        <input type="password" name="pwd1"<?php echo $pwd1Disabled ?> >
     </div>
       
     <div class="uk-width-large-2-3 uk-width-medium-1-1 uk-width-small-1-1
@@ -117,9 +119,10 @@ $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
     </div>
     <div class="uk-width-large-1-3 uk-width-medium-1-1 uk-width-small-1-1
          uk-pull-1-10">
-        <input type="password" name="pwd2">
+        <input type="password" name="pwd2" <?php echo $pwd2Disabled ?> >
     </div>
       
+      <br>
       
     <div class="uk-width-large-2-3 uk-width-medium-1-1 uk-width-small-1-1
            uk-margin-bottom">
