@@ -39,10 +39,6 @@ class Lsmcd_UserMgr_Controller
 
     public function run()
     {
-        $supportedActions = array(
-            'ChangePassword', 'DisplayStats', '', 'main', 'NewPassword'
-        );
-
         $do = Lsmcd_UserMgr_Util::get_request_var('do');
 
         switch ($do) {
@@ -56,9 +52,14 @@ class Lsmcd_UserMgr_Controller
                 $this->displayStats();
                 break;
             default:
+                /**
+                 * $do values '' and 'main' are valid defaults
+                 */
+
                 if ( self::$userMgrRuns ) {
                     throw new UserLSMCDException("No good do value");
                 }
+
                 $this->main();
 
                 self::$userMgrRuns ++;
