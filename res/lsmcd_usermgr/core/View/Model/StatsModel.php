@@ -53,15 +53,12 @@ class StatsModel
     private function doStats()
     {
         $lsmcdHome = getcwd();
-        $file = "{$lsmcdHome}/lsmcdsasl.py";
-
-        $cmd = "{$file} {$this->tplData[self::FLD_SERVER]} " .
-                (Lsmcd_UserMgr_Util::getDataByUser() ?
-                Lsmcd_UserMgr_Util::getCurrentCpanelUser() : "");
 
         $cpanel = CPanelWrapper::getCpanelObj();
 
-        $result = $cpanel->uapi('lsmcd', 'execIssueCmd', array( 'cmd' => $cmd ));
+        $result = $cpanel->uapi('lsmcd', 'doStats', 
+                                array('server' => $this->tplData[self::FLD_SERVER], 
+                                      'directory' => $lsmcdHome));
 
         $return_var = $result['cpanelresult']['result']['data']['retVar'];
         $resOutput = $result['cpanelresult']['result']['data']['output'];

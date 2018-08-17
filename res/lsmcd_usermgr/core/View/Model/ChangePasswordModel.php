@@ -18,6 +18,8 @@ class ChangePasswordModel
     const FLD_SERVER = 'server';
     const FLD_MESSAGE = 'message';
     const FLD_DONE = 'done';
+    const FLD_PWD1DISABLED = 'pwd1Disabled';
+    const FLD_PWD2DISABLED = 'pwd2Disabled';
 
     /**
      * @var mixed[]
@@ -37,23 +39,11 @@ class ChangePasswordModel
     {
         /* Create password file as it only works with a file */
         $result = FALSE;
-        $fileName = '/tmp/lsmcd' . $user . '.tmp';
-        $file = fopen($fileName, 'wb');
-        if ( !$file ) {
-            $this->setMessage('Error creating temporary file');
-            return FALSE;
-        }
-        fwrite($file, $password);
-        fclose($file);
-
-        $file = "saslpasswd2";
-
-        $cmd = "{$file} -f /etc/sasldb2 -p {$user} < {$fileName}";
-
+        
         $cpanel = CPanelWrapper::getCpanelObj();
 
-        $result = $cpanel->uapi('lsmcd', 'execIssueCmd', array( 'cmd' => $cmd ));
-
+        $result = $cpanel->uapi('lsmcd', 'issueSaslChangePassword',
+                                array ('password' => $password ));
         $return_var = $result['cpanelresult']['result']['data']['retVar'];
         $resOutput = $result['cpanelresult']['result']['data']['output'];
         if ( $return_var > 0 ) {
@@ -63,7 +53,6 @@ class ChangePasswordModel
             $this->setMessage("Password set successfully");
             $result = TRUE;
         }
-        unlink($fileName);
         return $result;
     }
 
@@ -79,9 +68,14 @@ class ChangePasswordModel
             $this->setMessage('ERROR: Passwords do not match.');
         }
         else {
+
             if ( $this->doChange(Lsmcd_UserMgr_Util::getCurrentCpanelUser(),
-                            $password1) )
+                            $password1) ) {
+
                 $this->setDone("DONE!");
+                $this->disabledPwd1(TRUE);
+                $this->disabledPwd2(TRUE);
+            }
         }
     }
 
@@ -90,6 +84,9 @@ class ChangePasswordModel
         $this->setUser();
         $this->setServer();
         $this->setDone('');
+        $this->disabledPwd1(FALSE);
+        $this->disabledPwd2(FALSE);
+
         if ( $subFunction != '' )
             $this->tryChange();
         else
@@ -138,6 +135,16 @@ class ChangePasswordModel
     public function getTpl()
     {
         return realpath(__DIR__ . '/../Tpl') . '/ChangePassword.tpl';
+    }
+    
+    public function disabledPwd1($disabled)
+    {
+        $this->tplData[self::FLD_PWD1DISABLED] = ($disabled ? 'disabled' : '');
+    }
+
+    public function disabledPwd2($disabled)
+    {
+        $this->tplData[self::FLD_PWD2DISABLED] = ($disabled ? 'disabled' : '');
     }
 
 }
