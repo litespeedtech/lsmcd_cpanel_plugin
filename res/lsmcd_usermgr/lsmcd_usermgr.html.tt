@@ -1,0 +1,29 @@
+[% WRAPPER '_assets/master.html.tt'
+    app_key = 'lsmcd_usermgr'
+    page_title = "User Management of LSMCD"
+    page_stylesheets = [             # CSS files.
+        'lsmcd_usermgr/static/litespeed-custom.min.css',
+        'lsmcd_usermgr/static/fontawesome-webfont.woff2'
+    ]
+    page_scripts = [                 # Scripts.
+        'lsmcd_usermgr/static/litespeed-custom.min.js'
+    ]
+    include_legacy_stylesheets = 0   # Exclude legacy yui stylesheets.
+    include_legacy_scripts = 0       # Exclude yui utilities and x3 optimized scripts.
+    include_cjt = 0                  # Exclude legacy cjt scripts.
+-%]
+
+[% SET CPANEL.CPVAR.dprefix = "../" %]
+
+<div id="lsmcdContent">
+  <img src="static/icons/ajax-loader.gif" />
+  <script type="text/javascript">
+    window.addEventListener("load",
+      function() {
+          lsmcdLoadPlugin('[% data.doVal %]', '[% data.jsonPost %]');
+      }
+    )
+  </script>
+</div
+
+[% END # WRAPPER END %]

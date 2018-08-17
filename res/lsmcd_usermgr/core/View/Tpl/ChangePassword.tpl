@@ -75,9 +75,7 @@ $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
 
         <?php if ($done == '') : ?>
 
-        <button name="do" type="submit" formmethod="post" value="NewPassword">
-          Change Password
-        </button>
+        <button name="do" type="submit" value="NewPassword">Change Password</button>
 
         <?php else: ?>
 
