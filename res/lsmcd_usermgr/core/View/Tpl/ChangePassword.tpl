@@ -90,3 +90,9 @@ $pwd2Disabled = $this->viewModel->getTplData(ViewModel::FLD_PWD2DISABLED);
 
 </div>
 
+<button name="do" type="submit" value="main"
+        class="uk-button uk-button-muted uk-margin uk-margin-large
+          uk-width-medium-1-10 uk-width-small-1-5"
+>
+  Back
+</button>
