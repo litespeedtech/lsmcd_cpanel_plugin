@@ -131,7 +131,7 @@ if (len(user) > 0):
         users, found, password = readDb(user,db)
         if (not found):
             print 'ERROR: User: ' + user + ' not defined in SASL database'
-            sys.exit(1)
+            sys.exit(120)
     else:
         sys.exit(1)
 
@@ -141,11 +141,11 @@ try:
     statsValue = stats.get(server)
 except bmemcached.exceptions.MemcachedException as e:
     print('Stats server exception: ' + str(e) + ' user: ' + user)
-    sys.exit(1)
+    sys.exit(121)
 
 if (len(statsValue) == 0):
     print('Stats server access error, server: ' + server + ', user: ' + user)
-    sys.exit(1)
+    sys.exit(122)
 
 for k, v in statsValue.iteritems():
     print k + ':' + v
