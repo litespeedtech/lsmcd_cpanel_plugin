@@ -144,7 +144,8 @@ except bmemcached.exceptions.MemcachedException as e:
     sys.exit(121)
 
 if (len(statsValue) == 0):
-    print('Stats server access error, server: ' + server + ', user: ' + user)
+    print 'Stats server access error, server: ' + server + ', user: ' + user + '.  Validate that the lsmcd service is started'
+          
     sys.exit(122)
 
 for k, v in statsValue.iteritems():
