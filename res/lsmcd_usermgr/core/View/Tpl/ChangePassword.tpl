@@ -6,8 +6,6 @@ $user = $this->viewModel->getTplData(ViewModel::FLD_USER);
 $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
 $message = $this->viewModel->getTplData(ViewModel::FLD_MESSAGE);
 $done = $this->viewModel->getTplData(ViewModel::FLD_DONE);
-$pwd1Disabled = $this->viewModel->getTplData(ViewModel::FLD_PWD1DISABLED);
-$pwd2Disabled = $this->viewModel->getTplData(ViewModel::FLD_PWD2DISABLED);
 
 ?>
 
@@ -25,26 +23,44 @@ $pwd2Disabled = $this->viewModel->getTplData(ViewModel::FLD_PWD2DISABLED);
   <hr class="uk-margin-top-remove uk-width-large-3-10 uk-width-medium-1-1
         uk-width-small-1-1 ls-border" />
 
-  <?php if ( strlen($message) ): ?>
-
   <h2 class="uk-margin-bottom-remove ls-text-bold ls-text-slateblue">
 
-    <?php if ( $done != '' ): ?>
+  <?php
 
-    <img src="static/icons/success_icon.png" />
+  if ( $done != '' ) :
 
-    <?php else: ?>
+      if ( strlen($message) ) :
 
-    <img src="static/icons/error_icon.png" />
+  ?>
+
+    <img src="static/icons/success_icon.png" alt="error icon" />
+    &nbsp;<?php echo $message; ?>
 
     <?php endif; ?>
 
+  </h2>
+
+  <?php
+
+  else:
+
+      if ( strlen($message) ):
+
+  ?>
+
+    <img src="static/icons/error_icon.png" alt="success icon" />
     &nbsp;<?php echo $message; ?>
   </h2>
   <hr class="uk-margin-top-remove uk-width-large-3-10 uk-width-medium-1-1
         uk-width-small-1-1 ls-border"/>
 
-  <?php endif; ?>
+    <?php else : ?>
+
+  </h2>
+
+    <?php endif; ?>
+
+
 
   <div class="uk-text-muted uk-grid uk-margin-bottom">
     <div class="uk-width-large-2-3 uk-width-medium-1-1 uk-width-small-1-1
@@ -55,7 +71,7 @@ $pwd2Disabled = $this->viewModel->getTplData(ViewModel::FLD_PWD2DISABLED);
     <div class="uk-width-large-1-3 uk-width-medium-1-1 uk-width-small-1-1
            uk-pull-1-10"
     >
-      <input type="password" name="pwd1" <?php echo $pwd1Disabled; ?>>
+      <input type="password" name="pwd1">
     </div>
 
     <div class="uk-width-large-2-3 uk-width-medium-1-1 uk-width-small-1-1
@@ -66,27 +82,19 @@ $pwd2Disabled = $this->viewModel->getTplData(ViewModel::FLD_PWD2DISABLED);
     <div class="uk-width-large-1-3 uk-width-medium-1-1 uk-width-small-1-1
            uk-pull-1-10"
     >
-      <input type="password" name="pwd2" <?php echo $pwd2Disabled; ?>>
+      <input type="password" name="pwd2">
     </div>
 
     <div class="uk-width-large-2-3 uk-width-medium-1-1 uk-width-small-1-1
            uk-margin-bottom"
     >
       <p class="uk-margin-left">
-
-        <?php if ($done == '') : ?>
-
         <button name="do" type="submit" value="NewPassword">Change Password</button>
-
-        <?php else: ?>
-
-        <button name="do" type="submit" value="main">OK</button>
-
-        <?php endif; ?>
-
       </p>
     </div>
   </div>
+
+  <?php endif; ?>
 
 </div>
 
