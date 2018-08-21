@@ -9,8 +9,6 @@
 namespace LsmcdUserPanel;
 
 use \LsmcdUserPanel\Lsmcd_UserMgr_Util;
-use \LsmcdUserPanel\Lsc\Context\UserContext;
-use \LsmcdUserPanel\Lsc\Context\UserPanelContextOption;
 use \LsmcdUserPanel\Lsc\UserLSMCDException;
 use \LsmcdUserPanel\View\Model as ViewModel;
 use \LsmcdUserPanel\View\View;
@@ -23,15 +21,7 @@ class Lsmcd_UserMgr_Controller
 
     static $userMgrRuns = 0;
 
-    public function __construct()
-    {
-        $this->init();
-    }
-
-    private function init()
-    {
-        UserContext::initialize(new UserPanelContextOption('cpanel_user'));
-    }
+    public function __construct() {}
 
     public function run()
     {
