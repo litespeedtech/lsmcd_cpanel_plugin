@@ -29,4 +29,11 @@ class UserLSMCDException extends \Exception
      */
     const E_NON_FATAL = 103;
 
+    /**
+     * Exceptions 12x are LSMCD specific
+     */
+    const E_USER_NOT_DEFINED = 120;
+    const E_STATS_SERVER = 121;
+    const E_SERVER_ACCESS = 122;
+
 }

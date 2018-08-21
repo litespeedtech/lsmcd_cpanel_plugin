@@ -18,6 +18,7 @@ class StatsModel
     const FLD_STATS = 'stats';
     const FLD_USER = 'user';
     const FLD_SERVER = 'server';
+    const FLD_ERR_MSG = 'errMsg';
 
     /**
      * @var mixed[]
@@ -33,7 +34,7 @@ class StatsModel
     {
         $this->setUser();
         $this->setServer();
-        $this->setStats();
+        $this->setStatsAndErrMsg();
     }
 
     /**
@@ -64,9 +65,22 @@ class StatsModel
         $resOutput = $result['cpanelresult']['result']['data']['output'];
 
         if ( $return_var > 0 ) {
-            throw new UserLSMCDException('Error getting stats info: RC: ' .
-            $return_var . ' Output: ' .
-            $resOutput);
+
+            switch ($return_var) {
+                case UserLSMCDException::E_USER_NOT_DEFINED:
+                    $errMsg = ' User not found in SASL database. Please visit the '
+                            . '<button type="submit" name="do" value="ChangePassword"'
+                            . ' class="uk-button-link">Change Password</button> screen to '
+                            . 'set a password and create an entry.';
+                    break;
+                default:
+                    $msg =
+                        "Error getting stats info: RC: {$return_var} Output: {$resOutput}";
+                    throw new UserLSMCDException($msg);
+            }
+
+            $this->tplData[self::FLD_ERR_MSG] = $errMsg;
+            return array();
         }
 
         $output = (!empty($resOutput)) ? explode("\n", $resOutput) : array();
@@ -74,8 +88,9 @@ class StatsModel
         return $output;
     }
 
-    private function setStats()
+    private function setStatsAndErrMsg()
     {
+        $this->tplData[self::FLD_ERR_MSG] = '';
         $this->tplData[self::FLD_STATS] = $this->doStats();
     }
 

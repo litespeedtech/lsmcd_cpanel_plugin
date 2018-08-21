@@ -5,8 +5,17 @@ use \LsmcdUserPanel\View\Model\StatsModel as ViewModel;
 $stats = $this->viewModel->getTplData(ViewModel::FLD_STATS);
 $user = $this->viewModel->getTplData(ViewModel::FLD_USER);
 $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
+$errMsg = $this->viewModel->getTplData(ViewModel::FLD_ERR_MSG);
+
+if ( !empty($errMsg) ) :
 
 ?>
+
+<p class="uk-margin-bottom-remove ls-text-bold">
+  <img src="static/icons/error_icon.png" alt="error icon" /> &nbsp;<?php echo $errMsg; ?>
+</p>
+
+<?php else: ?>
 
 <div class="uk-container">
   <p class="uk-text-large uk-margin-large-bottom">
@@ -90,6 +99,8 @@ $server = $this->viewModel->getTplData(ViewModel::FLD_SERVER);
 
   </div>
 </div>
+
+<?php endif; ?>
 
 <button name="do" type="submit" value="main"
         class="uk-button uk-button-muted uk-margin uk-margin-large
