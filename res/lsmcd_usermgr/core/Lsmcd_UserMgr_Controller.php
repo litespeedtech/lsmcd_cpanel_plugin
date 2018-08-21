@@ -53,7 +53,8 @@ class Lsmcd_UserMgr_Controller
                  */
 
                 if ( self::$userMgrRuns ) {
-                    throw new UserLSMCDException("No good do value");
+                    echo '<h2>Invalid Entrance</h2>';
+                    return;
                 }
 
                 $this->main();

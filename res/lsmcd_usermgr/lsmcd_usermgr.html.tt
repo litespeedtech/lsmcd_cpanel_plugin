@@ -15,15 +15,19 @@
 
 [% SET CPANEL.CPVAR.dprefix = "../" %]
 
-<div id="lsmcdContent">
-  <img src="static/icons/ajax-loader.gif" />
-  <script type="text/javascript">
-    window.addEventListener("load",
-      function() {
-          lsmcdLoadPlugin('[% data.doVal %]', '[% data.jsonPost %]');
-      }
-    )
-  </script>
-</div
+<div id="lsmcd-container" class="uk-margin-large-bottom">
+  <form name="lsmcdform" method="post">
+    <div id="lsmcdContent">
+      <img src="static/icons/ajax-loader.gif" />
+      <script type="text/javascript">
+        window.addEventListener("load",
+          function() {
+              lsmcdLoadPlugin('[% data.doVal %]', '[% data.jsonPost %]');
+          }
+        )
+      </script>
+    </div>
+  </form>
+</div>
 
 [% END # WRAPPER END %]
