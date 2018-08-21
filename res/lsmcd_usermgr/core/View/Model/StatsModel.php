@@ -56,17 +56,19 @@ class StatsModel
 
         $cpanel = CPanelWrapper::getCpanelObj();
 
-        $result = $cpanel->uapi('lsmcd', 'doStats', 
-                                array('server' => $this->tplData[self::FLD_SERVER], 
-                                      'directory' => $lsmcdHome));
+        $result = $cpanel->uapi('lsmcd', 'doStats',
+                array( 'server' => $this->tplData[self::FLD_SERVER],
+                        'directory' => $lsmcdHome ));
 
         $return_var = $result['cpanelresult']['result']['data']['retVar'];
         $resOutput = $result['cpanelresult']['result']['data']['output'];
+
         if ( $return_var > 0 ) {
             throw new UserLSMCDException('Error getting stats info: RC: ' .
             $return_var . ' Output: ' .
             $resOutput);
         }
+
         $output = (!empty($resOutput)) ? explode("\n", $resOutput) : array();
 
         return $output;

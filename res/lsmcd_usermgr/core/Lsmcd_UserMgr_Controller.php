@@ -28,10 +28,6 @@ class Lsmcd_UserMgr_Controller
         $this->init();
     }
 
-    /**
-     *
-     * @throws UserLSMCDException
-     */
     private function init()
     {
         UserContext::initialize(new UserPanelContextOption('cpanel_user'));

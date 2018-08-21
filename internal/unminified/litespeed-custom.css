@@ -4,6 +4,7 @@
 {
     clear:both
 }
+
 .uk-button,
 .uk-link,
 .uk-link:hover,
@@ -16,11 +17,17 @@ a:hover
 {
     text-decoration:none
 }
+
 .uk-button,
 .uk-button:disabled
 {
     text-shadow:0 1px 0 rgba(0,0,0,.15)
 }
+
+#lsmcd-container .uk-button-link {
+    padding: 0px;
+}
+
 #lsmcd-container 
 .modal
 {

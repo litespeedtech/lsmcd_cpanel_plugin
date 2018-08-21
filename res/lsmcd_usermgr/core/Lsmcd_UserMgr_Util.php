@@ -94,24 +94,30 @@ class Lsmcd_UserMgr_Util
         if ( strlen(self::$addr) )
             return self::$addr;
 
-        if ( file_exists(self::NODE_CONF_FILE) == false ) {
-            throw new UserLSMCDException('node.conf not found in expected' .
-            ' location: ' . self::NODE_CONF_FILE);
+        if ( !file_exists(self::NODE_CONF_FILE) ) {
+            throw new UserLSMCDException('node.conf not found in expected location: '
+                    . self::NODE_CONF_FILE);
         }
+
         $lines = file(self::NODE_CONF_FILE);
 
         foreach ( $lines as $line ) {
             $elements = explode('=', $line, 2);
-            if ( count($elements) != 2 )
+
+            if ( count($elements) != 2 ) {
                 continue;
+            }
+
             $title = ltrim(rtrim($elements[0]));
+
             if ( !strcasecmp($title, self::ADDR_TITLE) ) {
                 self::$addr = ltrim(rtrim($elements[1]));
-                if ( !strlen(self::$addr) )
-                    throw new UserLSMCDException(self::ADDR_TITLE .
-                    " not given a value in: " .
-                    $line . ' in file: ' .
-                    self::NODE_CONF_FILE);
+
+                if ( !strlen(self::$addr) ) {
+                    $msg = self::ADDR_TITLE . " not given a value in: {$line} in file: "
+                            . self::NODE_CONF_FILE;
+                    throw new UserLSMCDException($msg);
+                }
 
                 self::setUseSASL($lines);
                 self::setDataByUser($lines);
@@ -119,20 +125,22 @@ class Lsmcd_UserMgr_Util
             }
         }
 
-        throw new UserLSMCDException(self::ADDR_TITLE . " not found in: " .
-        self::NODE_CONF_FILE);
+        $msg = self::ADDR_TITLE . " not found in: " . self::NODE_CONF_FILE;
+        throw new UserLSMCDException($msg);
     }
 
     public static function getDataByUser()
     {
         self::getServerAddr();
-        return(self::$useSASL && self::$dataByUser);
+
+        return (self::$useSASL && self::$dataByUser);
     }
 
     public static function getUseSASL()
     {
         self::getServerAddr();
-        return(self::$useSASL);
+
+        return self::$useSASL;
     }
 
 }
