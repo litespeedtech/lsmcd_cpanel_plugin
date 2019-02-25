@@ -140,7 +140,7 @@ try:
     stats = lsmcd.stats()
     statsValue = stats.get(server)
 except bmemcached.exceptions.MemcachedException as e:
-    print('Stats server exception: ' + str(e) + ' user: ' + user)
+    print('Stats server exception: ' + e.message + ' user: ' + user)
     sys.exit(121)
 
 if (len(statsValue) == 0):
