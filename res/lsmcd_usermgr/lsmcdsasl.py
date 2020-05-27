@@ -10,8 +10,33 @@ if ((len(sys.argv) == 2) and (sys.argv[1] == '-')):
     print 'Python requirements satisfied'
     sys.exit(0)
 
+conf = '/usr/local/lsmcd/conf/node.conf'
 db = '/etc/sasldb2'
 global fileSize
+
+def getDbName():
+    title = 'cached.sasldb='
+    found = False
+    try:
+        f = open(conf, 'r')
+    except IOError as e:
+        print 'File open error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid())
+        raise
+    try:
+        for line in f:
+            ln = line.lower()
+            pos = ln.find(title)
+            if (pos == 0):
+                found = True
+                break
+    except IOError as e:
+        print 'File read error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid())
+        raise
+    if found:
+        s1 = slice(len(title), -1)
+        #print 'DB found: ' + line[s1] + ' at ' + str(len(title))
+        return line[s1]
+    return db
 
 def validateDb(db):
     global fileSize
@@ -127,6 +152,7 @@ os.seteuid(0)
 password = ''
 server, user = getUser()
 if (len(user) > 0):
+    db = getDbName()
     if (validateDb(db)):
         users, found, password = readDb(user,db)
         if (not found):
