@@ -32,6 +32,20 @@ sub _actions {
     );
 }
 
+sub get_db_name {
+    my $config_file = "/usr/local/lsmcd/conf/node.conf";
+    my $db_name = "/etc/sasldb2";
+    open(my $fh, '<', $config_file) or return ($db_name);
+    while ( my $line = <$fh>) {
+        chomp $line;
+        if ($line =~ m/^cached.sasldb=/ip) {
+            $db_name = ${^POSTMATCH};
+            return $db_name;
+        }
+    }
+    return $db_name;
+}
+
 sub ISSUE_SASL_CHANGE_PASSWORD {
 
     #Prevent potential action-at-a-distance bugs.
@@ -47,7 +61,7 @@ sub ISSUE_SASL_CHANGE_PASSWORD {
     my $host = hostname;
 
     my ($rh, $wh);
-    my $pid = open2( $rh, $wh, "/usr/sbin/saslpasswd2", "-f", "/etc/sasldb2", 
+    my $pid = open2( $rh, $wh, "/usr/sbin/saslpasswd2", "-f", get_db_name(), 
                      "-p", $user . '@' . $host);
     print $wh $password, "\n";
     $output = '';
