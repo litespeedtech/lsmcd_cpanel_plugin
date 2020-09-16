@@ -48,7 +48,7 @@ def validateDb(db):
     
     #print db + ' is ' + str(statinfo.st_size) + ' bytes.'
     if ((statinfo.st_size < 8192) or (statinfo.st_size % 4096) or (statinfo.st_size > 1048576)):
-        print 'Invalid SASL database size: ' + statinfo.st_size
+        print 'Invalid SASL database size: ' + str(statinfo.st_size)
         return False
     else:
         fileSize = statinfo.st_size
