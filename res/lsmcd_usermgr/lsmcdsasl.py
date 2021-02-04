@@ -57,7 +57,7 @@ def validateDb(db):
 def extractEntity(data, index):
     # build up the string going backwards.
     entity = ''
-    while ((index) and (data[index] > ' ')):
+    while ((index) and (data[index] >= ' ')):
         entity = data[index] + entity
         index = index - 1
         
