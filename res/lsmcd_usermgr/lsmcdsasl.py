@@ -179,7 +179,7 @@ if (len(statsValue) == 0):
     sys.exit(122)
 
 for k, v in statsValue.items():
-    print (str(k) + ':' + str(v))
+    print (str(k) + ':' + v.decode())
 
 sys.exit(0)
     
