@@ -27,21 +27,28 @@ then
     exit 1
 fi
 
-whereis pip|grep -q '/'
-if [ $? -gt 0 ]
-then
-    echo 'pip missing - installing'
-    wget https://bootstrap.pypa.io/2.6/get-pip.py -O get-pip.py
+USE_PYTHON3=0
+whereis pip3|grep -q '/'
+if [ $? -eq 0 ] ; then
+    echo 'Use python3'
+    USE_PYTHON3=1
+else
+    whereis pip|grep -q '/'
     if [ $? -gt 0 ]
     then
-        echo 'pip download failed - validate your network connection'
-        exit 1
-    fi
-    python get-pip.py
-    if [ $? -gt 0 ]
-    then
-        echo 'pip install failed'
-        exit 1
+        echo 'pip missing - installing'
+        wget https://bootstrap.pypa.io/2.6/get-pip.py -O get-pip.py
+        if [ $? -gt 0 ]
+        then
+            echo 'pip download failed - validate your network connection'
+            exit 1
+        fi
+        python get-pip.py
+        if [ $? -gt 0 ]
+        then
+            echo 'pip install failed'
+            exit 1
+        fi
     fi
 fi
 
@@ -52,12 +59,26 @@ then
     exit 1
 fi
 
+if [ $USE_PYTHON3 -eq 1 ] ; then
+    grep /usr/bin/python3 lsmcdsasl.py
+    if [ $? -gt 0 ] ; then
+        echo 'Change lsmcdsasl.py to explicitly use python3'
+        sed -i 's~/usr/bin/python~/usr/bin/python3~' lsmcdsasl.py
+    else
+        echo 'lsmcdsasl.py already set to use python3'
+    fi
+fi
+
 ./lsmcdsasl.py -
 
 if [ $? -gt 0 ] 
 then
     echo 'Installing python-binary-memcached'
-    pip install python-binary-memcached
+    if [ $USE_PYTHON3 -eq 1 ] ; then
+        pip3 install python-binary-memcached
+    else
+        pip install python-binary-memcached
+    fi
     if [ $? -gt 0 ]
     then
         echo 'Error installing required package - validate your network connection'

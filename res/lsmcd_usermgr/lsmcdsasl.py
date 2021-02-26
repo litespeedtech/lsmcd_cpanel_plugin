@@ -1,13 +1,13 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 try:
     import os, sys
     import bmemcached
 except ImportError:
-    print 'Missing Python bmemcached module: run "pip install python-binary-memcached"'
+    print ('Missing Python bmemcached module: run "pip install python-binary-memcached"')
     sys.exit(2)
 
 if ((len(sys.argv) == 2) and (sys.argv[1] == '-')):
-    print 'Python requirements satisfied'
+    print ('Python requirements satisfied')
     sys.exit(0)
 
 conf = '/usr/local/lsmcd/conf/node.conf'
@@ -20,7 +20,7 @@ def getDbName():
     try:
         f = open(conf, 'r')
     except IOError as e:
-        print 'File open error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid())
+        print ('File open error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid()))
         raise
     try:
         for line in f:
@@ -30,11 +30,11 @@ def getDbName():
                 found = True
                 break
     except IOError as e:
-        print 'File read error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid())
+        print ('File read error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid()))
         raise
     if found:
         s1 = slice(len(title), -1)
-        #print 'DB found: ' + line[s1] + ' at ' + str(len(title))
+        #print ('DB found: ' + line[s1] + ' at ' + str(len(title)))
         return line[s1]
     return db
 
@@ -43,12 +43,12 @@ def validateDb(db):
     try:
         statinfo = os.stat(db)
     except OSError as e:
-        print 'Error: ', e
+        print ('Error: '+ e)
         return False
     
-    #print db + ' is ' + str(statinfo.st_size) + ' bytes.'
+    #print (db + ' is ' + str(statinfo.st_size) + ' bytes.')
     if ((statinfo.st_size < 8192) or (statinfo.st_size % 4096) or (statinfo.st_size > 1048576)):
-        print 'Invalid SASL database size: ' + str(statinfo.st_size)
+        print ('Invalid SASL database size: ' + str(statinfo.st_size))
         return False
     else:
         fileSize = statinfo.st_size
@@ -63,7 +63,7 @@ def extractEntity(data, index):
         
     if (entity == ''):
         return '', 0
-    #print 'Entity: ' + entity
+    #print ('Entity: ' + entity)
     index = index - 1
     return entity, index
     
@@ -79,7 +79,7 @@ def extractUserTuple(searchUser, block, data, index):
             if (title == 'tag'):
                 if (value != 'userPassword'):
                     if (end == 4095):
-                        print 'At block: ' + str(block / 4096) + ' at index: ' + str(index) + ' invalid tag: ' + value
+                        print ('At block: ' + str(block / 4096) + ' at index: ' + str(index) + ' invalid tag: ' + value)
                     else:
                         pass  # Not my first rodeo
                     return 0, foundHere, finalPassword
@@ -88,7 +88,7 @@ def extractUserTuple(searchUser, block, data, index):
             elif (title == 'Password'):
                 password = value
                 if (user == searchUser):
-                    #print password
+                    #print (password)
                     foundHere = True
                     finalPassword = password
                     return index, foundHere, finalPassword
@@ -96,14 +96,14 @@ def extractUserTuple(searchUser, block, data, index):
             # Expected end point
             return 0, foundHere, finalPassword
         else:
-            print 'At block: ' + str(block / 4096) + ' Missed tuple at ' + title
+            print ('At block: ' + str(block / 4096) + ' Missed tuple at ' + title)
             return 0, foundHere, finalPassword
     return index, foundHere, finalPassword
           
           
 def readDb(user,db):
     global fileSize
-    #print 'File size: ' + str(fileSize)
+    #print ('File size: ' + str(fileSize))
     block = 0
     users = 0
     found = False
@@ -111,13 +111,13 @@ def readDb(user,db):
     try:
         fd = open(db, 'r')
     except IOError as e:
-        print 'File open error of ' + db + ':' + e.strerror + ' I am: ' + str(os.getuid())
+        print ('File open error of ' + db + ':' + e.strerror + ' I am: ' + str(os.getuid()))
         raise
     while (block < fileSize):
         data = fd.read(4096)
         tag = data[4084:4095]
         if (tag in 'userPassword'):
-            #print 'Block #' + str(block / 4096) + ' has tag.'
+            #print ('Block #' + str(block / 4096) + ' has tag.')
             index = 4095
             while (index):
                 index, foundHere, password = extractUserTuple(user, block, data, index)
@@ -133,7 +133,7 @@ def readDb(user,db):
 
 def getUser():
     if (len(sys.argv) < 2):
-        print 'Must specify server'
+        print ('Must specify server')
         sys.exit(1)
     server = sys.argv[1]
     if ((len(server) > 8) and (server[0:4].lower() == 'uds:')):
@@ -156,7 +156,7 @@ if (len(user) > 0):
     if (validateDb(db)):
         users, found, password = readDb(user,db)
         if (not found):
-            print 'ERROR: User: ' + user + ' not defined in SASL database'
+            print ('ERROR: User: ' + user + ' not defined in SASL database')
             sys.exit(120)
     else:
         sys.exit(1)
@@ -170,12 +170,12 @@ except bmemcached.exceptions.MemcachedException as e:
     sys.exit(121)
 
 if (len(statsValue) == 0):
-    print 'Stats server access error, server: ' + server + ', user: ' + user + '.  Validate that the lsmcd service is started'
+    print ('Stats server access error, server: ' + server + ', user: ' + user + '.  Validate that the lsmcd service is started')
           
     sys.exit(122)
 
 for k, v in statsValue.iteritems():
-    print k + ':' + v
+    print (k + ':' + v)
 
 sys.exit(0)
     
