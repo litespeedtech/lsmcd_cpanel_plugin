@@ -18,7 +18,7 @@ def getDbName():
     title = 'cached.sasldb='
     found = False
     try:
-        f = open(conf, 'r')
+        f = open(conf, 'r', encoding='iso-8859-1')
     except IOError as e:
         print ('File open error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid()))
         raise
@@ -109,12 +109,16 @@ def readDb(user,db):
     found = False
     password = ''
     try:
-        fd = open(db, 'r')
+        fd = open(db, 'r', encoding='iso-8859-1')
     except IOError as e:
         print ('File open error of ' + db + ':' + e.strerror + ' I am: ' + str(os.getuid()))
         raise
     while (block < fileSize):
-        data = fd.read(4096)
+        try:
+            data = fd.read(4096)
+        except IOError as e:
+            print('File read error of ' + db + ':' + e.strerror + ' at block: ' + str(block))
+            raise
         tag = data[4084:4095]
         if (tag in 'userPassword'):
             #print ('Block #' + str(block / 4096) + ' has tag.')
@@ -174,8 +178,8 @@ if (len(statsValue) == 0):
           
     sys.exit(122)
 
-for k, v in statsValue.iteritems():
-    print (k + ':' + v)
+for k, v in statsValue.items():
+    print (str(k) + ':' + str(v))
 
 sys.exit(0)
     
