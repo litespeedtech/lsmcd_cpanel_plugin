@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 try:
     import os, sys
     import bmemcached
