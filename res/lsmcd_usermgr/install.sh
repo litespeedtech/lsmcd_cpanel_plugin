@@ -52,21 +52,18 @@ else
     fi
 fi
 
-echo ${PWD}/lsmcdsasl.py
-if [ ! -x ${PWD}/lsmcdsasl.py ]
+echo ${PWD}/lsmcdsasl.py.raw
+if [ ! -f ${PWD}/lsmcdsasl.py.raw ]
 then
     echo 'Must be run from directory where the full installation was unpacked'
     exit 1
 fi
 
 if [ $USE_PYTHON3 -eq 1 ] ; then
-    grep /usr/bin/python3 lsmcdsasl.py
-    if [ $? -gt 0 ] ; then
-        echo 'Change lsmcdsasl.py to explicitly use python3'
-        sed -i 's~/usr/bin/python~/usr/bin/python3~' lsmcdsasl.py
-    else
-        echo 'lsmcdsasl.py already set to use python3'
-    fi
+    sed 's~/usr/bin/python~/usr/bin/python3~' lsmcdsasl.py.raw > lsmcdsasl.py 
+    chmod 755 lsmcdsasl.py 
+else
+    cp lsmcdsasl.py.raw lsmcdsasl.py
 fi
 
 ./lsmcdsasl.py -

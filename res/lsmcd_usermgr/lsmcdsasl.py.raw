@@ -2,6 +2,7 @@
 try:
     import os, sys
     import bmemcached
+    from io import open
 except ImportError:
     print ('Missing Python bmemcached module: run "pip install python-binary-memcached"')
     sys.exit(2)
