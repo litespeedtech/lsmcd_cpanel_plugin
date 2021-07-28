@@ -19,7 +19,7 @@ def getDbName():
     title = 'cached.sasldb='
     found = False
     try:
-        f = open(conf, 'r', encoding='iso-8859-1')
+        f = open(conf, 'rb')
     except IOError as e:
         print ('File open error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid()))
         raise
