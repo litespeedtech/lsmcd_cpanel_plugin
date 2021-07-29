@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 try:
     import os, sys
     import bmemcached
@@ -19,7 +19,7 @@ def getDbName():
     title = 'cached.sasldb='
     found = False
     try:
-        f = open(conf, 'rb')
+        f = open(conf, 'r', encoding='iso-8859-1')
     except IOError as e:
         print ('File open error of ' + conf + ':' + e.strerror + ' I am: ' + str(os.getuid()))
         raise
@@ -58,8 +58,8 @@ def validateDb(db):
 def extractEntity(data, index):
     # build up the string going backwards.
     entity = ''
-    while ((index) and (data[index] >= ' ')):
-        entity = data[index] + entity
+    while ((index) and (chr(data[index]) >= ' ')):
+        entity = chr(data[index]) + entity
         index = index - 1
         
     if (entity == ''):
@@ -110,7 +110,7 @@ def readDb(user,db):
     found = False
     password = ''
     try:
-        fd = open(db, 'r', encoding='iso-8859-1')
+        fd = open(db, 'rb')
     except IOError as e:
         print ('File open error of ' + db + ':' + e.strerror + ' I am: ' + str(os.getuid()))
         raise
@@ -120,7 +120,7 @@ def readDb(user,db):
         except IOError as e:
             print('File read error of ' + db + ':' + e.strerror + ' at block: ' + str(block))
             raise
-        tag = data[4084:4095]
+        tag = data[4084:4096].decode('ascii')
         if (tag in 'userPassword'):
             #print ('Block #' + str(block / 4096) + ' has tag.')
             index = 4095
