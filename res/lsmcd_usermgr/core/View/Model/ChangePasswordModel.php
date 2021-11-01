@@ -60,12 +60,16 @@ class ChangePasswordModel
     {
         $password1 = $_POST["pwd1"];
         $password2 = $_POST["pwd2"];
+        $invalid = "\\\`\ #\"\'|&?*[]><";
 
         if ( (strlen($password1) == 0) || (strlen($password2) == 0) ) {
             $this->setMessage('ERROR: Enter the new password in both fields');
         }
         elseif ( strcmp($password1, $password2) != 0 ) {
             $this->setMessage('ERROR: Passwords do not match.');
+        }
+        elseif ( strpbrk($password, $invalid ) {
+            $this->setMessage('ERROR: It is illegal to use a character in the set: ' . $invalid . '.  Choose a different password.');
         }
         elseif ( $this->doChange($password1) ) {
             $this->setDone("DONE!");
