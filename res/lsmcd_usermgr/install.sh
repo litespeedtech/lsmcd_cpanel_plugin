@@ -1,4 +1,4 @@
-#!/bin/sh
+/pip3#!/bin/sh
 # SCRIPT: install.sh
 # PURPOSE: Install LSMCD User Manager cPanel Plugin
 # AUTHOR: LiteSpeed Technologies
@@ -37,7 +37,7 @@ else
     if [ $? -gt 0 ]
     then
         echo 'pip missing - installing'
-        wget https://bootstrap.pypa.io/2.6/get-pip.py -O get-pip.py
+        wget https://bootstrap.pypa.io/pip/2.6/get-pip.py -O get-pip.py
         if [ $? -gt 0 ]
         then
             echo 'pip download failed - validate your network connection'
