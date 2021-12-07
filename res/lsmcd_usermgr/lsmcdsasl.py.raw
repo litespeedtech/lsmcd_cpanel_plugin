@@ -1,6 +1,6 @@
 #!/usr/bin/python
 try:
-    import os, sys
+    import os, sys, platform
     import bmemcached
     from io import open
 except ImportError:
@@ -78,6 +78,7 @@ def extractUserTuple(searchUser, block, data, index):
     end = index
     foundHere = False
     finalPassword = ''
+    badDomain = False
     tuple = [ 'tag', 'Domain', 'User', 'Password' ]
     for title in tuple:
         value, index = extractEntity(data, index)
@@ -89,13 +90,19 @@ def extractUserTuple(searchUser, block, data, index):
                     else:
                         pass  # Not my first rodeo
                     return 0, foundHere, finalPassword
+            elif (title == 'Domain'):
+                if (value != platform.node()):
+                    badDomain = True
             elif (title == 'User'):
                 user = value
             elif (title == 'Password'):
                 password = value
                 if (user == searchUser):
                     #print (password)
-                    foundHere = True
+                    if badDomain:
+                        foundHere = False
+                    else:
+                        foundHere = True
                     finalPassword = password
                     return index, foundHere, finalPassword
         elif (title == 'tag'):
@@ -104,9 +111,10 @@ def extractUserTuple(searchUser, block, data, index):
         else:
             print ('At block: ' + str(block / 4096) + ' Missed tuple at ' + title)
             return 0, foundHere, finalPassword
+    if badDomain:
+        return index, False, finalPassword
     return index, foundHere, finalPassword
-          
-          
+
 def readDb(user,db):
     global fileSize
     #print ('File size: ' + str(fileSize))
