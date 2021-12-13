@@ -29,7 +29,7 @@ if [ "$INSTALL" == "N" -a "$INSTALL2" == "N" ]; then
     echo "Install missing required directories.  Are you in a cPanel system?"
     exit 1
 fi
-if [ ! -d /usr/local/cpanel/scripts/install_plugin ]; then
+if [ ! -e /usr/local/cpanel/scripts/install_plugin ]; then
     echo "Install missing required script.  Are you in a cPanel system?"
     exit 1
 fi
