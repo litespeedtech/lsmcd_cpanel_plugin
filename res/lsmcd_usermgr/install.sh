@@ -105,7 +105,7 @@ mkdir -p $PLUGIN_DIR
 cp -r * ${PLUGIN_DIR}/
 
 # Install the plugin (which also places the png image in the proper location)
-/usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz
+/usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz --theme=paper_lantern
 
 echo 'Installing needed Perl module and custom API calls...'
 echo ""
