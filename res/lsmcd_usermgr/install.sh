@@ -1,12 +1,38 @@
-/pip3#!/bin/sh
+#!/bin/bash
 # SCRIPT: install.sh
 # PURPOSE: Install LSMCD User Manager cPanel Plugin
 # AUTHOR: LiteSpeed Technologies
 #
 
-PLUGIN_DIR='/usr/local/cpanel/base/frontend/paper_lantern/lsmcd_usermgr'
+PLUGIN_DIR_BASE='/usr/local/cpanel/base/frontend'
+PLUGIN_DIR_THEME="${PLUGIN_DIR_BASE}/paper_lantern"
+PLUGIN_DIR_THEME2="${PLUGIN_DIR_BASE}/jupiter"
+PLUGIN_DIR="${PLUGIN_DIR_THEME}/lsmcd_usermgr"
+PLUGIN_DIR2="${PLUGIN_DIR_THEME2}/lsmcd_usermgr"
 PERL_MODULE_DIR='/usr/local/cpanel/Cpanel/API'
 API_DIR='/usr/local/cpanel/bin/admin/Lsmcd'
+if [ -d "${PLUGIN_DIR_THEME2}" ];
+then
+    INSTALL2="Y"
+    if [ -d "${PLUGIN_DIR_THEME}" ];
+    then
+        INSTALL_PARAM="Y"
+        INSTALL="Y"
+    else
+        INSTALL="N"
+    fi
+else
+    INSTALL2="N"
+    INSTALL_PARAM="N"
+fi
+if [ "$INSTALL" == "N" -a "$INSTALL2" == "N" ]; then
+    echo "Install missing required directories.  Are you in a cPanel system?"
+    exit 1
+fi
+if [ ! -d /usr/local/cpanel/scripts/install_plugin ]; then
+    echo "Install missing required script.  Are you in a cPanel system?"
+    exit 1
+fi
 
 pushd `dirname "$0"`
 
@@ -92,20 +118,36 @@ fi
 
 
 echo "Copying files..."
-# checks for existing plugin folder and	deletes	if exists
-if [ -d $PLUGIN_DIR ]
-then
-    rm -rf $PLUGIN_DIR
+if [ "$INSTALL" == "Y" ]; then
+    # checks for existing plugin folder and	deletes	if exists
+    if [ -d $PLUGIN_DIR ]; then
+        rm -rf $PLUGIN_DIR
+    fi
+    # Create the directory for the plugin
+    mkdir -p $PLUGIN_DIR
+    # Move all files to plugin directory
+    cp -r * ${PLUGIN_DIR}/
+else
+    # checks for existing plugin folder and	deletes	if exists
+    if [ -d $PLUGIN_DIR2 ]; then
+        rm -rf $PLUGIN_DIR2
+    fi
+    # Create the directory for the plugin
+    mkdir -p $PLUGIN_DIR2
+    # Move all files to plugin directory
+    cp -r * ${PLUGIN_DIR2}/
 fi
 
-# Create the directory for the plugin
-mkdir -p $PLUGIN_DIR
-
-# Move all files to plugin directory
-cp -r * ${PLUGIN_DIR}/
-
 # Install the plugin (which also places the png image in the proper location)
-/usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz --theme=paper_lantern
+if [ "$INSTALL" == "Y" ]; then
+    if [ "$INSTALL_PARAM" == "Y" ]; then
+        /usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz --theme=paper_lantern
+    else
+        /usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz
+    fi
+elif [ "$INSTALL2" == "Y" ]; then
+    /usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR2}/lsmcd_cpanel_plugin.tar.gz --theme=jupiter
+fi
 
 echo 'Installing needed Perl module and custom API calls...'
 echo ""
@@ -118,11 +160,17 @@ fi
 
 cp -f ../lsmcdAdminBin* ${API_DIR}/
 
-chmod -R 644 $PLUGIN_DIR
-find ${PLUGIN_DIR}/ -type d -execdir chmod 755 {} +
-chmod 700 ${PLUGIN_DIR}/*.sh
-chmod 755 ${PLUGIN_DIR}/*.py
-
+if [ "$INSTALL" == "Y" ]; then
+    chmod -R 644 $PLUGIN_DIR
+    find ${PLUGIN_DIR}/ -type d -execdir chmod 755 {} +
+    chmod 700 ${PLUGIN_DIR}/*.sh
+    chmod 755 ${PLUGIN_DIR}/*.py
+elif [ "$INSTALL2" == "Y" ]; then
+    chmod -R 644 $PLUGIN_DIR2
+    find ${PLUGIN_DIR2}/ -type d -execdir chmod 755 {} +
+    chmod 700 ${PLUGIN_DIR2}/*.sh
+    chmod 755 ${PLUGIN_DIR2}/*.py
+fi
 
 chmod 700 ${API_DIR}/lsmcdAdminBin
 chmod 644 ${API_DIR}/lsmcdAdminBin.conf

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 pushd `dirname "$0"`
 echo 'Installs lsmcd if not already installed'
 if [ $USER != 'root' ]
