@@ -127,7 +127,9 @@ if [ "$INSTALL" == "Y" ]; then
     mkdir -p $PLUGIN_DIR
     # Move all files to plugin directory
     cp -r * ${PLUGIN_DIR}/
-else
+fi
+
+if [ "$INSTALL2" == "Y" ]; then
     # checks for existing plugin folder and	deletes	if exists
     if [ -d $PLUGIN_DIR2 ]; then
         rm -rf $PLUGIN_DIR2
@@ -145,7 +147,9 @@ if [ "$INSTALL" == "Y" ]; then
     else
         /usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz
     fi
-elif [ "$INSTALL2" == "Y" ]; then
+fi
+
+if [ "$INSTALL2" == "Y" ]; then
     /usr/local/cpanel/scripts/install_plugin ${PLUGIN_DIR2}/lsmcd_cpanel_plugin.tar.gz --theme=jupiter
 fi
 
@@ -165,7 +169,9 @@ if [ "$INSTALL" == "Y" ]; then
     find ${PLUGIN_DIR}/ -type d -execdir chmod 755 {} +
     chmod 700 ${PLUGIN_DIR}/*.sh
     chmod 755 ${PLUGIN_DIR}/*.py
-elif [ "$INSTALL2" == "Y" ]; then
+fi
+
+if [ "$INSTALL2" == "Y" ]; then
     chmod -R 644 $PLUGIN_DIR2
     find ${PLUGIN_DIR2}/ -type d -execdir chmod 755 {} +
     chmod 700 ${PLUGIN_DIR2}/*.sh
