@@ -53,6 +53,11 @@ fi
 
 #Remove cPanel plugin and files
 echo 'Removing LSMCD User Manager Manager cPanel Plugin...'
+if [ "$INSTALL2" == "Y" ] ; then
+    /usr/local/cpanel/scripts/uninstall_plugin ${PLUGIN_DIR2}/lsmcd_cpanel_plugin.tar.gz --theme=jupiter
+    /bin/rm -rf $PLUGIN_DIR2
+    echo ""
+fi
 if [ "$INSTALL" == "Y" ] ; then
     if [ "$INSTALL_PARAM" == "Y" ]; then
         /usr/local/cpanel/scripts/uninstall_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz --theme=paper_lantern
@@ -60,11 +65,6 @@ if [ "$INSTALL" == "Y" ] ; then
         /usr/local/cpanel/scripts/uninstall_plugin ${PLUGIN_DIR}/lsmcd_cpanel_plugin.tar.gz
     fi
     /bin/rm -rf $PLUGIN_DIR
-    echo ""
-fi
-if [ "$INSTALL2" == "Y" ] ; then
-    /usr/local/cpanel/scripts/uninstall_plugin ${PLUGIN_DIR2}/lsmcd_cpanel_plugin.tar.gz --theme=jupiter
-    /bin/rm -rf $PLUGIN_DIR2
     echo ""
 fi
 
